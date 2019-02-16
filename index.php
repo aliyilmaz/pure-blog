@@ -13,6 +13,7 @@ $Mind->route('install/users', 'app/views/index', 'app/tables/users');
 $Mind->route('install/posts', 'app/views/index', 'app/tables/posts');
 $Mind->route('install/general', 'app/views/index', 'app/tables/general');
 
-// Demo content and user creation routes.
+// Demo creation routes.
 $Mind->route('tests/post-add', 'app/views/index', 'app/tests/add_post');
 $Mind->route('tests/user-add', 'app/views/index', 'app/tests/add_user');
+$Mind->route('tests/general-add', 'app/views/index', 'app/tests/add_general');
