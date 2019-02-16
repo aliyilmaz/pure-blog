@@ -26,9 +26,9 @@ $scheme = array(
         'created_at'=>date('d-m-Y H:i:s')
     ),
     array(
-        'username'=>'Reid Burke',
+        'username'=>'Andrew Wooldridge',
         'password'=>md5('123456'),
-        'email'=>'reid.burke@example.com',
+        'email'=>'andrew.wooldridge@example.com',
         'avatar'=>'public/img/common/andrew-avatar.png',
         '_token'=>md5(rand(999,9999)),
         'created_at'=>date('d-m-Y H:i:s')
