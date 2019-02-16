@@ -12,4 +12,7 @@ $scheme = array(
 
 $this->createtable('general', $scheme);
 
+// A blank record is added.
+$this->insert('general', array('created_at'=>date('d-m-Y H:i:s')));
+
 ?>
