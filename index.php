@@ -20,3 +20,4 @@ $Mind->route('tests/general-add', 'app/views/index', 'app/tests/add_general');
 
 // Data collection routes.
 $Mind->route('tests/posts', 'app/tests/data_posts');
+$Mind->route('tests/general', 'app/tests/data_general');
