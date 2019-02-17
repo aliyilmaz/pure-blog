@@ -15,7 +15,7 @@ $scheme = array(
         'tags'=>json_encode(array('JavaScript')),
         'pinstatus'=>false,
         'created_at'=>date('d-m-Y H:i:s'),
-        'author'=>'1'
+        'author'=>'2'
     ),
     array(
         'title'=>'Photos from CSSConf and JSConf',
@@ -23,7 +23,7 @@ $scheme = array(
         'tags'=>json_encode(array('Uncategorized')),
         'pinstatus'=>false,
         'created_at'=>date('d-m-Y H:i:s'),
-        'author'=>'1'
+        'author'=>'3'
     ),
     array(
         'title'=>'YUI 3.10.2 Released',
@@ -31,7 +31,7 @@ $scheme = array(
         'tags'=>json_encode(array('YUI')),
         'pinstatus'=>false,
         'created_at'=>date('d-m-Y H:i:s'),
-        'author'=>'1'
+        'author'=>'4'
     )
 );
 
