@@ -1,6 +1,6 @@
 <?php
 
-function get_avatar($id){
+function get_user($id, $column){
     
     global $Mind;
 
@@ -10,7 +10,7 @@ function get_avatar($id){
         )
     );
 
-    $avatar = $Mind->get('users', $schema);
+    $data = $Mind->get('users', $schema);
 
-    return $avatar[0]['avatar'];
+    return $data[0][$column];
 }
