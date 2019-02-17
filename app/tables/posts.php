@@ -6,6 +6,7 @@ $scheme = array(
     'content:small',
     'author:small',
     'tags:small',
+    'pinstatus:string',
     'created_at:string',
     'updated_at:string'
 );
