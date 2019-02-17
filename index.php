@@ -5,7 +5,7 @@ use Mind\Mind;
 $Mind = new Mind();
 
 // Static page routes.
-$Mind->route('/', 'app/views/index', 'app/data/index');
+$Mind->route('/', 'app/views/index');
 $Mind->route('admin', 'app/views/admin');
 
 // Table creation routes.
@@ -19,4 +19,4 @@ $Mind->route('tests/user-add', 'app/views/index', 'app/tests/add_user');
 $Mind->route('tests/general-add', 'app/views/index', 'app/tests/add_general');
 
 // Data collection routes.
-$Mind->route('data/index', 'app/tests/data_index');
+$Mind->route('tests/index', 'app/tests/data_index');
