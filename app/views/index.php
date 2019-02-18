@@ -82,10 +82,11 @@
                 <h1 class="content-subhead">Recent Posts</h1>
                    
                 <?php foreach($recent_posts as $post){ ?>
-                <?php $username = get_user($post['author'],'username'); ?>
+                <?php extract(get_user('users', $post['author'])); ?>
+                
                 <section class="post">
                     <header class="post-header">
-                        <img width="48" height="48" alt="<?=$username;?>&#x27;s avatar" class="post-avatar" src="<?=get_user($post['author'], 'avatar');?>">
+                        <img width="48" height="48" alt="<?=$username;?>&#x27;s avatar" class="post-avatar" src="<?=$avatar;?>">
 
                         <h2 class="post-title"><?=$post['title'];?></h2>
 
