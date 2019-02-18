@@ -59,36 +59,41 @@
                 <h1 class="content-subhead">Pinned Post</h1>
 
                 <!-- A single blog post -->
+                <?php foreach($pinned_posts as $post){ ?>
+                <?php extract($post); ?>
+                <?php extract(get_user('users', $author)); ?>
                 <section class="post">
                     <header class="post-header">
-                        <img width="48" height="48" alt="Tilo Mitra&#x27;s avatar" class="post-avatar" src="public/img/common/tilo-avatar.png">
+                        <img width="48" height="48" alt="<?=$username;?>&#x27;s avatar" class="post-avatar" src="<?=$avatar;?>">
 
-                        <h2 class="post-title">Introducing Pure</h2>
+                        <h2 class="post-title"><?=$title;?></h2>
 
                         <p class="post-meta">
-                            By <a href="#" class="post-author">Tilo Mitra</a> under <a class="post-category post-category-design" href="#">CSS</a> <a class="post-category post-category-pure" href="#">Pure</a>
+                            By <a href="#" class="post-author"><?=$username;?></a> under <a class="post-category post-category-design" href="#">CSS</a> <a class="post-category post-category-pure" href="#">Pure</a>
                         </p>
                     </header>
 
                     <div class="post-description">
                         <p>
-                            Yesterday at CSSConf, we launched Pure – a new CSS library. Phew! Here are the <a href="https://speakerdeck.com/tilomitra/pure-bliss">slides from the presentation</a>. Although it looks pretty minimalist, we’ve been working on Pure for several months. After many iterations, we have released Pure as a set of small, responsive, CSS modules that you can use in every web project.
+                        <?=$content;?>
                         </p>
                     </div>
                 </section>
+                <?php } ?>
             </div>
 
             <div class="posts">
                 <h1 class="content-subhead">Recent Posts</h1>
                    
                 <?php foreach($recent_posts as $post){ ?>
-                <?php extract(get_user('users', $post['author'])); ?>
+                <?php extract($post); ?>
+                <?php extract(get_user('users', $author)); ?>
                 
                 <section class="post">
                     <header class="post-header">
                         <img width="48" height="48" alt="<?=$username;?>&#x27;s avatar" class="post-avatar" src="<?=$avatar;?>">
 
-                        <h2 class="post-title"><?=$post['title'];?></h2>
+                        <h2 class="post-title"><?=$title;?></h2>
 
                         <p class="post-meta">
                             By <a class="post-author" href="#"><?=$username;?></a> under <a class="post-category post-category-js" href="#">JavaScript</a>
@@ -97,7 +102,7 @@
 
                     <div class="post-description">
                         <p>
-                        <?=$post['content'];?>
+                        <?=$content;?>
                         </p>
                     </div>
                 </section>
@@ -108,9 +113,10 @@
             <div class="footer">
                 <div class="pure-menu pure-menu-horizontal">
                     <ul>
-                        <li class="pure-menu-item"><a href="http://purecss.io/" class="pure-menu-link">About</a></li>
-                        <li class="pure-menu-item"><a href="http://twitter.com/yuilibrary/" class="pure-menu-link">Twitter</a></li>
-                        <li class="pure-menu-item"><a href="http://github.com/pure-css/pure/" class="pure-menu-link">GitHub</a></li>
+                    <?php foreach($fbuttons as $button){ ?>
+                    <?php extract($button); ?>
+                        <li class="pure-menu-item"><a href="<?=$href;?>" class="pure-menu-link"><?=$text;?></a></li>
+                    <?php } ?>
                     </ul>
                 </div>
             </div>
