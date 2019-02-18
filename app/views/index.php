@@ -69,7 +69,11 @@
                         <h2 class="post-title"><?=$title;?></h2>
 
                         <p class="post-meta">
-                            By <a href="#" class="post-author"><?=$username;?></a> under <a class="post-category post-category-design" href="#">CSS</a> <a class="post-category post-category-pure" href="#">Pure</a>
+                            By <a href="#" class="post-author"><?=$username;?></a> under 
+                            <?php foreach(json_decode($category, true) as $cat_id){ ?>
+                            <?php $cat = get_category('categories', $cat_id); ?>
+                            <a class="post-category <?=$cat['class_name'];?>" href="#"><?=$cat['text'];?></a> 
+                            <?php } ?>
                         </p>
                     </header>
 
@@ -96,7 +100,11 @@
                         <h2 class="post-title"><?=$title;?></h2>
 
                         <p class="post-meta">
-                            By <a class="post-author" href="#"><?=$username;?></a> under <a class="post-category post-category-js" href="#">JavaScript</a>
+                            By <a href="#" class="post-author"><?=$username;?></a> under 
+                            <?php foreach(json_decode($category, true) as $cat_id){ ?>
+                            <?php $cat = get_category('categories', $cat_id); ?>
+                            <a class="post-category <?=$cat['class_name'];?>" href="#"><?=$cat['text'];?></a> 
+                            <?php } ?>
                         </p>
                     </header>
 
