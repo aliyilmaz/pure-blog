@@ -1,16 +1,16 @@
 <?php
 
-function get_user($id, $column){
+function get_user($table, $id){
     
     global $Mind;
 
     $schema = array(
         'search'=>array(
-            'equal'=>array('id'=>$id)
+            'equal'=>array($Mind->increments($table)=>$id)
         )
     );
 
-    $data = $Mind->get('users', $schema);
+    $data = $Mind->get($table, $schema);
 
-    return $data[0][$column];
+    return $data[0];
 }
