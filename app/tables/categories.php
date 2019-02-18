@@ -26,6 +26,11 @@ $data = array(
         'created_at'=>date('d-m-Y H:i:s')
     ),
     array(
+        'text'=>'Pure', 
+        'class_name'=>'post-category-pure', 
+        'created_at'=>date('d-m-Y H:i:s')
+    ),
+    array(
         'text'=>'JavaScript', 
         'class_name'=>'post-category-js', 
         'created_at'=>date('d-m-Y H:i:s')
