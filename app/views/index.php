@@ -61,7 +61,7 @@
                 <!-- A single blog post -->
                 <?php foreach($pinned_posts as $post){ ?>
                 <?php extract($post); ?>
-                <?php extract(get_user('users', $author)); ?>
+                <?php extract(get_data('users', $author)); ?>
                 <section class="post">
                     <header class="post-header">
                         <img width="48" height="48" alt="<?=$username;?>&#x27;s avatar" class="post-avatar" src="<?=$avatar;?>">
@@ -71,7 +71,7 @@
                         <p class="post-meta">
                             By <a href="#" class="post-author"><?=$username;?></a> under 
                             <?php foreach(json_decode($category, true) as $cat_id){ ?>
-                            <?php $cat = get_category('categories', $cat_id); ?>
+                            <?php $cat = get_data('categories', $cat_id); ?>
                             <a class="post-category <?=$cat['class_name'];?>" href="#"><?=$cat['text'];?></a> 
                             <?php } ?>
                         </p>
@@ -91,7 +91,7 @@
                    
                 <?php foreach($recent_posts as $post){ ?>
                 <?php extract($post); ?>
-                <?php extract(get_user('users', $author)); ?>
+                <?php extract(get_data('users', $author)); ?>
                 
                 <section class="post">
                     <header class="post-header">
@@ -102,7 +102,7 @@
                         <p class="post-meta">
                             By <a href="#" class="post-author"><?=$username;?></a> under 
                             <?php foreach(json_decode($category, true) as $cat_id){ ?>
-                            <?php $cat = get_category('categories', $cat_id); ?>
+                            <?php $cat = get_data('categories', $cat_id); ?>
                             <a class="post-category <?=$cat['class_name'];?>" href="#"><?=$cat['text'];?></a> 
                             <?php } ?>
                         </p>
