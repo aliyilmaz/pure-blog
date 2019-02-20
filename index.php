@@ -6,8 +6,7 @@ $Mind = new Mind();
 
 // Static page routes.
 $cache = array(
-    'app/samantha/get_user',
-    'app/samantha/get_category', 
+    'app/samantha/get_data',
     'app/data/index'
 );
 $Mind->route('/', 'app/views/index', $cache);
