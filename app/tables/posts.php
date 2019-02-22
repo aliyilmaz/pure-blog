@@ -7,6 +7,7 @@ $scheme = array(
     'author:small',
     'tags:small',
     'category:string',
+    'pimages:medium',
     'pinstatus:string',
     'created_at:string',
     'updated_at:string'
