@@ -78,9 +78,33 @@
                     </header>
 
                     <div class="post-description">
-                        <p>
-                        <?=$content;?>
-                        </p>
+                        <?php if(!empty($content)) { ?>
+                            <p>
+                            <?=$content;?>
+                            </p>
+                        <?php } ?>
+                        <div class="post-images pure-g">
+                        <?php $pimages = json_decode($pimages, true); ?> 
+                        <?php if(!empty($pimages)) { ?>
+
+                            <?php if(!empty($pimages)){ ?>
+                                <?php foreach($pimages as $image) { ?>
+                                <div class="pure-u-1 pure-u-md-1-2">
+                                    <a href="<?=$image['href'];?>">
+                                        <img alt="<?=$image['alt'];?>"
+                                            class="pure-img-responsive"
+                                            src="<?=$image['src'];?>">
+                                    </a>
+
+                                    <div class="post-image-meta">
+                                        <h3><?=$image['h3'];?></h3>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                            </div>
+                            <?php } ?>
+                            
+                        <?php } ?>
                     </div>
                 </section>
                 <?php } ?>
@@ -109,9 +133,33 @@
                     </header>
 
                     <div class="post-description">
-                        <p>
-                        <?=$content;?>
-                        </p>
+                        <?php if(!empty($content)) { ?>
+                            <p>
+                            <?=$content;?>
+                            </p>
+                        <?php } ?>
+                        <div class="post-images pure-g">
+                        <?php $pimages = json_decode($pimages, true); ?> 
+                        <?php if(!empty($pimages)) { ?>
+
+                            <?php if(!empty($pimages)){ ?>
+                                <?php foreach($pimages as $image) { ?>
+                                <div class="pure-u-1 pure-u-md-1-2">
+                                    <a href="<?=$image['href'];?>">
+                                        <img alt="<?=$image['alt'];?>"
+                                            class="pure-img-responsive"
+                                            src="<?=$image['src'];?>">
+                                    </a>
+
+                                    <div class="post-image-meta">
+                                        <h3><?=$image['h3'];?></h3>
+                                    </div>
+                                </div>
+                                <?php } ?>
+                            </div>
+                            <?php } ?>
+                            
+                        <?php } ?>
                     </div>
                 </section>
                 <?php } ?>
