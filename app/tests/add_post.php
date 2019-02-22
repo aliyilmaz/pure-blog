@@ -25,6 +25,22 @@ $scheme = array(
         'tags'=>'',
         'category'=>json_encode(array('1')),
         'pinstatus'=>false,
+        'pimages'=>json_encode(
+            array(
+                array(
+                    'href'=>'http://www.flickr.com/photos/uberlife/8915936174/',
+                    'alt'=>'Photo of someone working poolside at a resort',
+                    'src'=>'http://farm8.staticflickr.com/7448/8915936174_8d54ec76c6.jpg',
+                    'h3'=>'CSSConf Photos'
+                ),
+                array(
+                    'href'=>'http://www.flickr.com/photos/uberlife/8907351301/',
+                    'alt'=>'Photo of the sunset on the beach',
+                    'src'=>'http://farm8.staticflickr.com/7382/8907351301_bd7460cffb.jpg',
+                    'h3'=>'JSConf Photos'
+                )
+            )
+        ),
         'created_at'=>date('d-m-Y H:i:s'),
         'author'=>'3'
     ),
