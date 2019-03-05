@@ -1,13 +1,14 @@
 <?php
 
-require_once('Mind.php');
+require_once 'Mind.php';
 use Mind\Mind;
+
 $Mind = new Mind();
 
 // Static page routes.
 $cache = array(
     'app/samantha/get_data',
-    'app/data/index'
+    'app/data/index',
 );
 $Mind->route('/', 'app/views/index', $cache);
 $Mind->route('admin', 'app/views/admin');
@@ -32,3 +33,4 @@ $Mind->route('tests/users', 'app/tests/data_users');
 
 // Api routes.
 $Mind->route('api/posts:start@end', 'app/api/posts');
+$Mind->route('api/general', 'app/api/general');
