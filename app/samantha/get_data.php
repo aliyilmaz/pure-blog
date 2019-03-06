@@ -1,19 +1,15 @@
 <?php
 
-function get_data($table, $needle, $column = null)
+function get_data($table, $map, $column = null)
 {
     global $Mind;
     $data = array();
 
-    if (!$Mind->is_column($table, $column)) {
-        $column = $Mind->increments($table);
-    }
+    $schema['search']['equal'] = $map;
 
-    $schema = array(
-        'search' => array(
-            'equal' => array($column => $needle),
-        ),
-    );
+    if (!empty($column)) {
+        $schema['column'] = $column;
+    }
 
     $data = $Mind->get($table, $schema);
 
