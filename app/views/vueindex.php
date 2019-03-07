@@ -7,13 +7,13 @@
     <meta name="description" content="A layout example that shows off a blog page with a list of posts.">
     <title>Blog &ndash; Layout Examples &ndash; Pure</title>
     
-    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
+    <link rel="stylesheet" href="public/pure-release-1.0.0/pure-min.css" integrity="sha384-" crossorigin="anonymous">
     
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-old-ie-min.css">
+        <link rel="stylesheet" href="public/pure-release-1.0.0/grids-responsive-old-ie-min.css">
     <![endif]-->
     <!--[if gt IE 8]><!-->
-        <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/grids-responsive-min.css">
+        <link rel="stylesheet" href="public/pure-release-1.0.0/grids-responsive-min.css">
     <!--<![endif]-->
     
     
@@ -25,7 +25,7 @@
     <!--<![endif]-->
 
     <!-- production version, optimized for size and speed -->
-    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="public/vue-2.6.8/dist/vue.min.js"></script>
 </head>
 <body>
 
@@ -126,7 +126,9 @@
                 buttons:'',
                 fbuttons:'',
                 created_at:'',
-                updated_at:''
+                updated_at:'',
+                avatar:'',
+                username:''
             },
             created(){
 
@@ -146,6 +148,16 @@
                     this.created_at = res[0].created_at;
                     this.updated_at = res[0].updated_at;
                 })
+            },
+            methods: {
+                user: function (id) {
+                    fetch('api/user/'+id)
+                    .then((res) => {return res.json()})
+                    .then((res) => {
+                        this.avatar = res[0].avatar;
+                        this.username = res[0].username;
+                    })
+                }
             }
         })
     });
