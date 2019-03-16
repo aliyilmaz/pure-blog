@@ -61,12 +61,12 @@
                     <!-- A single blog post -->
                     <section class="post">
                         <header class="post-header">
-                            <img width="48" height="48" alt="Author &#x27;s avatar" class="post-avatar" src="img/common/tilo-avatar.png">
+                            <img width="48" height="48" v-bind:title="post.username + `&#x27;s avatar`"  class="post-avatar" v-bind:src="post.avatar">
 
                             <h2 class="post-title">{{ post.title }}</h2>
 
                             <p class="post-meta">
-                                By <a href="#" class="post-author">{{ post.author }}</a> under <a class="post-category post-category-design" href="#">CSS</a> <a class="post-category post-category-pure" href="#">Pure</a>
+                                By <a href="#" class="post-author">{{ post.username }}</a> under <a class="post-category post-category-design" href="#">CSS</a> <a class="post-category post-category-pure" href="#">Pure</a>
                             </p>
                         </header>
 
@@ -83,12 +83,12 @@
 
                     <section class="post">
                         <header class="post-header">
-                            <img width="48" height="48" alt="Eric Ferraiuolo&#x27;s avatar" class="post-avatar" src="img/common/ericf-avatar.png">
+                            <img width="48" height="48" v-bind:title="post.username + `&#x27;s avatar`" class="post-avatar" v-bind:src="post.avatar">
 
                             <h2 class="post-title">{{ post.title }}</h2>
 
                             <p class="post-meta">
-                                By <a class="post-author" href="#">Eric Ferraiuolo</a> under <a class="post-category post-category-js" href="#">JavaScript</a>
+                                By <a class="post-author" href="#">{{ post.username }}</a> under <a class="post-category post-category-js" href="#">JavaScript</a>
                             </p>
                         </header>
 
@@ -135,7 +135,9 @@
                 fetch('api/posts')
                 .then((res) => {return res.json()})
                 .then((res) => {
-                    this.posts = res;
+                    for (let index = 0; index < res.length; index++) {
+                        this.getuser(res[index]);           
+                    }
                 })
 
                 fetch('api/general')
@@ -150,12 +152,13 @@
                 })
             },
             methods: {
-                user: function (id) {
-                    fetch('api/user/'+id)
+                getuser: function (data) {
+                    fetch('api/user/'+data.id)
                     .then((res) => {return res.json()})
                     .then((res) => {
-                        this.avatar = res[0].avatar;
-                        this.username = res[0].username;
+                        data['username'] = res.username;
+                        data['avatar'] = res.avatar;
+                        this.posts.push(data);
                     })
                 }
             }
