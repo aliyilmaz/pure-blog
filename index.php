@@ -12,7 +12,6 @@ $cache = array(
 );
 $Mind->route('/', 'app/views/index', $cache);
 $Mind->route('admin', 'app/views/admin');
-$Mind->route('vue', 'app/views/vueindex');
 
 // Table creation routes.
 $Mind->route('install/users', 'app/views/index', 'app/tables/users');
