@@ -14,16 +14,16 @@ $Mind->route('/', 'app/views/index', $cache);
 $Mind->route('admin', 'app/views/admin');
 
 // Table creation routes.
-$Mind->route('install/users', 'app/views/index', 'app/tables/users');
-$Mind->route('install/posts', 'app/views/index', 'app/tables/posts');
-$Mind->route('install/general', 'app/views/index', 'app/tables/general');
-$Mind->route('install/categories', 'app/views/index', 'app/tables/categories');
+$Mind->route('install/users', 'app/tables/users');
+$Mind->route('install/posts', 'app/tables/posts');
+$Mind->route('install/general', 'app/tables/general');
+$Mind->route('install/categories', 'app/tables/categories');
 
 // Demo content creation routes.
-$Mind->route('tests/user-add', 'app/views/index', 'app/tests/add_user');
-$Mind->route('tests/post-add', 'app/views/index', 'app/tests/add_post');
-$Mind->route('tests/general-add', 'app/views/index', 'app/tests/add_general');
-$Mind->route('tests/category-add', 'app/views/index', 'app/tests/add_category');
+$Mind->route('tests/user-add', 'app/tests/add_user');
+$Mind->route('tests/post-add', 'app/tests/add_post');
+$Mind->route('tests/general-add', 'app/tests/add_general');
+$Mind->route('tests/category-add', 'app/tests/add_category');
 
 // Data collection routes.
 $Mind->route('tests/users', 'app/tests/data_users');
