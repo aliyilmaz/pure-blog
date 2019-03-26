@@ -31,6 +31,6 @@ $Mind->route('tests/general', 'app/tests/data_general');
 $Mind->route('tests/users', 'app/tests/data_users');
 
 // Api routes.
-$Mind->route('api/posts:start@end', 'app/api/posts');
-$Mind->route('api/general', 'app/api/general');
-$Mind->route('api/user:id', 'app/api/user', 'app/samantha/get_data');
+// $Mind->route('api/posts:start@end', 'app/api/posts');
+// $Mind->route('api/general', 'app/api/general');
+// $Mind->route('api/user:id', 'app/api/user', 'app/samantha/get_data');
