@@ -29,6 +29,7 @@ $Mind->route('tests/category-add', 'app/views/index', 'app/tests/add_category');
 $Mind->route('tests/users', 'app/tests/data_users');
 $Mind->route('tests/posts', 'app/tests/data_posts');
 $Mind->route('tests/general', 'app/tests/data_general');
+$Mind->route('tests/categories', 'app/tests/data_categories');
 
 // Api routes.
 // $Mind->route('api/posts:start@end', 'app/api/posts');
