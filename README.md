@@ -1,5 +1,5 @@
 # pure-blog
-Mind Framework ile oluşturulan basit bir Blog uygulamasıdır.
+Mind Framework ile oluşturulan basit bir blog uygulamasıdır.
 
 ## Kurulum
 * Dosyayı [bu bağlantıdan](https://github.com/aliyilmaz/pure-blog/archive/master.zip) indirin
