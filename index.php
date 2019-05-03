@@ -16,6 +16,7 @@ $Mind->route('install/users', 'app/tables/users');
 $Mind->route('install/posts', 'app/tables/posts');
 $Mind->route('install/general', 'app/tables/general');
 $Mind->route('install/categories', 'app/tables/categories');
+$Mind->route('install/startx', 'app/tables/startx');
 
 // Demo content creation routes.
 $Mind->route('tests/user-add', 'app/tests/add_user');
