@@ -14,7 +14,7 @@
     <h2>Çıkış yapmak istediğinize emin misiniz?</h2>
     <form action="admin/logout" method="POST">
         <button class='animated infinite pulse' id="logoutForm" name="loginStatus">Çıkış Yap</button>
-        <button class='animated infinite pulse' id="cancelForm" name="cancelStatus">Vazgeç</button>
+        <button class='animated infinite pulse' id="cancelForm" name="cancelStatus">Dashboard</button>
     </form>
     </div>
     <?php
