@@ -9,7 +9,11 @@ $cache = array(
     'app/data/index',
 );
 $Mind->route('/', 'app/views/index', $cache);
-$Mind->route('admin', 'app/views/admin');
+$Mind->route('admin/dashboard', 'app/views/admin/dashboard');
+$Mind->route('admin/forms', 'app/views/admin/forms');
+$Mind->route('admin/blank', 'app/views/admin/blank');
+$Mind->route('admin/login', 'app/views/admin/login');
+$Mind->route('admin/logout', 'app/views/admin/logout');
 
 // Table creation routes.
 $Mind->route('install/users', 'app/tables/users');
