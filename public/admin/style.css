@@ -75,6 +75,7 @@ body::before {
     padding: 10px 15px;
     border: 0;
     color: #fff;
+    float: left;
     font-family: "Roboto";
     font-size: 14px;
     font-weight: 400;
@@ -93,8 +94,17 @@ body::before {
     background-color: #27ae60;
 }
 .form button#logoutForm{
+    width: 50%;
     background-color: #b5291a;
 }
 .form button#logoutForm:hover{
     background-color: #cb2e1d;
+}
+.form button#cancelForm{
+    width: 50%;
+    color:#333;
+    background-color: #e9da72;
+}
+.form button#cancelForm:hover{
+    background-color: #ddd80b;
 }
