@@ -35,8 +35,8 @@ body::before {
 
 .form h2 {
     margin: 0 0 20px;
-    line-height: 1;
-    color: #2ecc71;
+    text-align: center;
+    color: #424846;
     font-size: 18px;
     font-weight: 400;
 }
@@ -54,7 +54,7 @@ body::before {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     font-size: 14px;
-    font-wieght: 400;
+    font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-transition: 0.2s linear;
@@ -69,9 +69,8 @@ body::before {
     border: 1px solid #2ecc71;
 }
 
-.form button#loginForm {
+.form button {
     cursor: pointer;
-    background: #2ecc71;
     width: 100%;
     padding: 10px 15px;
     border: 0;
@@ -87,7 +86,15 @@ body::before {
     -o-transition: 0.2s linear;
     transition: 0.2s linear;
 }
-
+.form button#loginForm{
+    background-color: #2ecc71;
+}
 .form button#loginForm:hover {
-    background: #27ae60;
+    background-color: #27ae60;
+}
+.form button#logoutForm{
+    background-color: #b5291a;
+}
+.form button#logoutForm:hover{
+    background-color: #cb2e1d;
 }
