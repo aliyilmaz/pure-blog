@@ -15,7 +15,7 @@
     <form>
         <input placeholder='Username' type='text'>
         <input placeholder='Password' type='password'>
-        <button class='animated infinite pulse'>Login</button>
+        <button class='animated infinite pulse' id="loginForm">Login</button>
     </form>
     </div>
 

@@ -69,7 +69,7 @@ body::before {
     border: 1px solid #2ecc71;
 }
 
-.form button {
+.form button#loginForm {
     cursor: pointer;
     background: #2ecc71;
     width: 100%;
@@ -88,6 +88,6 @@ body::before {
     transition: 0.2s linear;
 }
 
-.form button:hover {
+.form button#loginForm:hover {
     background: #27ae60;
 }
