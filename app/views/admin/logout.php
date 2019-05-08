@@ -12,10 +12,19 @@
 <body>
     <div class='form animated bounceIn'>
     <h2>Çıkış yapmak istediğinize emin misiniz?</h2>
-    <form>
+    <form action="admin/logout" method="POST">
+        <input type="hidden" name="loginStatus" value="false">
         <button class='animated infinite pulse' id="logoutForm">Çıkış Yap</button>
     </form>
     </div>
-
+    <?php
+        if ($_SESSION['loginStatus'] == false) {
+            $this->redirect('admin/login');
+        }
+        if (!empty($this->post['loginStatus'])) {
+            $_SESSION['loginStatus'] = false;
+            $this->redirect('admin/login');
+        }
+    ?>
 </body>
 </html>
