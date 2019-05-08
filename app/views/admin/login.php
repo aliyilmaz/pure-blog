@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Giriş Yap</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="public/admin/login.css">
+    <link rel="stylesheet" href="public/admin/style.css">
 </head>
 <body>
     <div class='form animated bounceIn'>
