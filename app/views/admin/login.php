@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <title>Giriş Yap</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="public/admin/login.css">
 </head>
 <body>
     <div class='form animated bounceIn'>
-    <h2>Login To Your Account</h2>
+    <h2>Giriş Yap</h2>
     <form>
-        <input placeholder='Username' type='text'>
-        <input placeholder='Password' type='password'>
-        <button class='animated infinite pulse' id="loginForm">Login</button>
+        <input placeholder='Kullanıcı Adı' type='text'>
+        <input placeholder='Parola' type='password'>
+        <button class='animated infinite pulse' id="loginForm">Giriş</button>
     </form>
     </div>
 
