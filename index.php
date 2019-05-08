@@ -12,7 +12,7 @@ $Mind->route('/', 'app/views/index', $cache);
 $Mind->route('admin/dashboard', 'app/views/admin/dashboard');
 $Mind->route('admin/forms', 'app/views/admin/forms');
 $Mind->route('admin/blank', 'app/views/admin/blank');
-$Mind->route('admin/login', 'app/views/admin/login');
+$Mind->route('admin/login', 'app/views/admin/login', 'app/samantha/get_data');
 $Mind->route('admin/logout', 'app/views/admin/logout');
 
 // Table creation routes.
