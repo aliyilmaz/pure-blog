@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="public/admin/style.css">
 </head>
 <body>
-    <div class='form animated bounceIn'>
+    <div class='loginForm animated bounceIn'>
     <h2>Çıkış yapmak istediğinize emin misiniz?</h2>
     <form action="admin/logout" method="POST">
         <button class='animated infinite pulse' id="logoutForm" name="loginStatus">Çıkış Yap</button>
