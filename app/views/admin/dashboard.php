@@ -10,5 +10,10 @@
 <body>
   <h2>Welcome to Dashboard page.</h2>
   <a href="admin/logout">Çıkış Yap</a>
+  <?php
+  if ($_SESSION['loginStatus'] == false) {
+      $this->redirect('admin/login');
+  }
+  ?>
 </body>
 </html>
