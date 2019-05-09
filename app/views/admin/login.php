@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="public/admin/style.css">
 </head>
 <body>
-    <div class='form animated bounceIn'>
+    <div class='loginForm animated bounceIn'>
     <h2>Giriş Yap</h2>
     <form action="admin/login" method="POST">
         <input placeholder='Kullanıcı Adı' type='text' name="username" value="Tilo Mitra">
@@ -27,7 +27,7 @@
                 $data = get_data('users', array('username' => $this->post['username'], 'password' => md5($this->post['password'])));
                 if (!empty($data)) {
                     $_SESSION['loginStatus'] = true;
-                    $this->redirect('admin/logout');
+                    $this->redirect('admin/dashboard');
                 }
             }
 
