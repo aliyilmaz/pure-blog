@@ -7,7 +7,7 @@ $scheme = array(
         'tags'=>'',
         'category'=>json_encode(array('2', '3')),
         'pinstatus'=>true,
-        'created_at'=>date('d-m-Y H:i:s'),
+        'created_at'=>$this->timestamp,
         'author'=>'1'
     ),
     array(
@@ -16,7 +16,7 @@ $scheme = array(
         'tags'=>'',
         'category'=>json_encode(array('4')),
         'pinstatus'=>false,
-        'created_at'=>date('d-m-Y H:i:s'),
+        'created_at'=>$this->timestamp,
         'author'=>'2'
     ),
     array(
@@ -41,7 +41,7 @@ $scheme = array(
                 )
             )
         ),
-        'created_at'=>date('d-m-Y H:i:s'),
+        'created_at'=>$this->timestamp,
         'author'=>'3'
     ),
     array(
@@ -50,7 +50,7 @@ $scheme = array(
         'tags'=>'',
         'category'=>json_encode(array('5')),
         'pinstatus'=>false,
-        'created_at'=>date('d-m-Y H:i:s'),
+        'created_at'=>$this->timestamp,
         'author'=>'4'
     )
 );

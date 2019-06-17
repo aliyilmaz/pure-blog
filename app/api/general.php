@@ -5,6 +5,6 @@ $scheme = array(
 );
 
 // General settings read.
-$general = $this->get('general', $scheme);
+$general = $this->getData('general', $scheme);
 
 echo $general;

@@ -4,11 +4,7 @@ require_once 'Mind.php';
 $Mind = new Mind();
 
 // Static page routes.
-$cache = array(
-    'app/samantha/get_data',
-    'app/data/index',
-);
-$Mind->route('/', 'app/views/index', $cache);
+$Mind->route('/', 'app/views/index', 'app/data/index');
 $Mind->route('admin/dashboard', 'app/views/admin/dashboard');
 $Mind->route('admin/forms', 'app/views/admin/forms');
 $Mind->route('admin/blank', 'app/views/admin/blank');
@@ -35,6 +31,6 @@ $Mind->route('tests/general', 'app/tests/data_general');
 $Mind->route('tests/categories', 'app/tests/data_categories');
 
 // Api routes.
-// $Mind->route('api/posts:start@end', 'app/api/posts');
-// $Mind->route('api/general', 'app/api/general');
-// $Mind->route('api/user:id', 'app/api/user', 'app/samantha/get_data');
+ $Mind->route('api/posts:start@end', 'app/api/posts');
+ $Mind->route('api/general', 'app/api/general');
+ $Mind->route('api/user:id', 'app/api/user');

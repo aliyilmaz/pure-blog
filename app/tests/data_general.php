@@ -1,6 +1,6 @@
 <?php
 
-$general = $this->get('general');
+$general = $this->getData('general');
 
 $title = $general[0]['title'];
 $description = $general[0]['description'];

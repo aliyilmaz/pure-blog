@@ -1,7 +1,7 @@
 <?php
 
 // Category
-$category = $this->get('categories');
+$category = $this->getData('categories');
 
 echo '<h1>CATEGORIES</h1>';
 echo '<pre>';

@@ -7,7 +7,7 @@ $scheme = array(
         'email'=>'tilo.mitra@example.com',
         'avatar'=>'public/img/common/tilo-avatar.png',
         '_token'=>md5(rand(999,9999)),
-        'created_at'=>date('d-m-Y H:i:s')
+        'created_at'=>$this->timestamp
     ),
     array(
         'username'=>'Eric Ferraiuolo',
@@ -15,7 +15,7 @@ $scheme = array(
         'email'=>'eric.ferraiuolo@example.com',
         'avatar'=>'public/img/common/ericf-avatar.png',
         '_token'=>md5(rand(999,9999)),
-        'created_at'=>date('d-m-Y H:i:s')
+        'created_at'=>$this->timestamp
     ),
     array(
         'username'=>'Reid Burke',
@@ -23,7 +23,7 @@ $scheme = array(
         'email'=>'reid.burke@example.com',
         'avatar'=>'public/img/common/reid-avatar.png',
         '_token'=>md5(rand(999,9999)),
-        'created_at'=>date('d-m-Y H:i:s')
+        'created_at'=>$this->timestamp
     ),
     array(
         'username'=>'Andrew Wooldridge',
@@ -31,7 +31,7 @@ $scheme = array(
         'email'=>'andrew.wooldridge@example.com',
         'avatar'=>'public/img/common/andrew-avatar.png',
         '_token'=>md5(rand(999,9999)),
-        'created_at'=>date('d-m-Y H:i:s')
+        'created_at'=>$this->timestamp
     )
 );
 

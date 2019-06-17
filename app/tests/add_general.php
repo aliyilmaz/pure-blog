@@ -18,7 +18,7 @@ $scheme = array(
 
         )
     ),
-    'updated_at'=>date('d-m-Y H:i:s')
+    'updated_at'=>$this->timestamp
 );
 
 $this->update('general', $scheme, 1);

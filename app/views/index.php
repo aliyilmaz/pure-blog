@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <base href="<?=$this->baseurl; ?>" target="_blank">
+    <base href="<?=$this->base_url; ?>" target="_blank">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A layout example that shows off a blog page with a list of posts.">
@@ -64,7 +64,7 @@
                 <?php foreach ($pinned_posts as $post) {
         ?>
                 <?php extract($post); ?>
-                <?php extract(get_data('users', array('id' => $author))); ?>
+                <?php extract($this->samantha('users', array('id' => $author))); ?>
                 <section class="post">
                     <header class="post-header">
                         <img width="48" height="48" alt="<?=$username; ?>&#x27;s avatar" class="post-avatar" src="<?=$avatar; ?>">
@@ -75,7 +75,7 @@
                             By <a href="#" class="post-author"><?=$username; ?></a> under 
                             <?php foreach (json_decode($category, true) as $cat_id) {
             ?>
-                            <?php $cat = get_data('categories', array('id' => $cat_id)); ?>
+                            <?php $cat = $this->samantha('categories', array('id' => $cat_id)); ?>
                             <a class="post-category <?=$cat['class_name']; ?>" href="#"><?=$cat['text']; ?></a> 
                             <?php
         } ?>
@@ -130,7 +130,7 @@
                 <?php foreach ($recent_posts as $post) {
         ?>
                 <?php extract($post); ?>
-                <?php extract(get_data('users', array('id' => $author))); ?>
+                <?php extract($this->samantha('users', array('id' => $author))); ?>
                 
                 <section class="post">
                     <header class="post-header">
@@ -142,7 +142,7 @@
                             By <a href="#" class="post-author"><?=$username; ?></a> under 
                             <?php foreach (json_decode($category, true) as $cat_id) {
             ?>
-                            <?php $cat = get_data('categories', array('id' => $cat_id)); ?>
+                            <?php $cat = $this->samantha('categories', array('id' => $cat_id)); ?>
                             <a class="post-category <?=$cat['class_name']; ?>" href="#"><?=$cat['text']; ?></a> 
                             <?php
         } ?>

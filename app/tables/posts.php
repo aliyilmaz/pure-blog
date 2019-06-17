@@ -13,6 +13,6 @@ $scheme = array(
     'updated_at:string'
 );
 
-$this->createtable('posts', $scheme);
+$this->tableCreate('posts', $scheme);
 
 ?>

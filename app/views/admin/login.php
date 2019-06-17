@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <base href="<?=$this->baseurl; ?>">
+    <base href="<?=$this->base_url; ?>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -24,7 +24,7 @@
                 $this->redirect('admin/logout');
             }
             if ($this->do_have('users', $this->post['username'], 'username')) {
-                $data = get_data('users', array('username' => $this->post['username'], 'password' => md5($this->post['password'])));
+                $data = $this->samantha('users', array('username' => $this->post['username'], 'password' => md5($this->post['password'])));
                 if (!empty($data)) {
                     $_SESSION['loginStatus'] = true;
                     $this->redirect('admin/dashboard');

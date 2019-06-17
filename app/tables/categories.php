@@ -11,4 +11,4 @@ $scheme = array(
     'updated_at:string',
 );
 
-$this->createtable('categories', $scheme);
+$this->tableCreate('categories', $scheme);

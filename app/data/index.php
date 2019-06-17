@@ -3,23 +3,23 @@
 // Pinned Post
 $scheme = array(
     'search'=>array(
-        'equal'=>array('pinstatus'=>true)
+        'or'=>array('pinstatus'=>true)
     )
 );
 
-$pinned_posts = $this->get('posts', $scheme);
+$pinned_posts = $this->getData('posts', $scheme);
 
 // Recent Posts
 $scheme = array(
     'search'=>array(
-        'equal'=>array('pinstatus'=>false)
+        'or'=>array('pinstatus'=>false)
     )
 );
 
-$recent_posts = $this->get('posts', $scheme);
+$recent_posts = $this->getData('posts', $scheme);
 
 // General settings read.
-$general = $this->get('general');
+$general = $this->getData('general');
 
 $title  = $general[0]['title'];
 $description = $general[0]['description'];

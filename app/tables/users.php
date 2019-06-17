@@ -11,6 +11,6 @@ $scheme = array(
     'updated_at:string'
 );
 
-$this->createtable('users', $scheme);
+$this->tableCreate('users', $scheme);
 
 ?>

@@ -8,7 +8,7 @@ $scheme = array(
     'format'=>'json'
 );
 
-$posts = $this->get('posts', $scheme);
+$posts = $this->getData('posts', $scheme);
 
 echo $posts;
 

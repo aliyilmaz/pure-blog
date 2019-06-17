@@ -1,7 +1,7 @@
 <?php
 
 // Users
-$users = $this->get('users');
+$users = $this->getData('users');
 
 echo '<h1>USERS</h1>';
 echo '<pre>';

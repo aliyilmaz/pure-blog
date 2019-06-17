@@ -10,7 +10,7 @@ $scheme = array(
     'updated_at:string'
 );
 
-$this->createtable('general', $scheme);
+$this->tableCreate('general', $scheme);
 
 // A blank record is added.
 $this->insert('general', array('created_at'=>date('d-m-Y H:i:s')));
