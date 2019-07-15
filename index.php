@@ -34,3 +34,4 @@ $Mind->route('tests/categories', 'app/tests/data_categories');
  $Mind->route('api/posts:start@end', 'app/api/posts');
  $Mind->route('api/general', 'app/api/general');
  $Mind->route('api/user:id', 'app/api/user');
+ $Mind->route('api/post:id', 'app/api/post');
