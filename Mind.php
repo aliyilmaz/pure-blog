@@ -3,7 +3,7 @@
 /**
  *
  * @package    Mind
- * @version    Release: 3.0.0
+ * @version    Release: 3.0.1
  * @license    GPLv3
  * @author     Ali YILMAZ <aliyilmaz.work@gmail.com>
  * @category   Php Framework, Design pattern builder for PHP.
@@ -85,6 +85,14 @@ class Mind extends PDO
         $this->timestamp = date("d-m-Y H:i:s");
         $this->base_url = dirname($_SERVER['SCRIPT_NAME']).'/';
 
+    }
+
+    public function __destruct()
+    {
+        if($this->error_status){
+            $this->mindLoad(dirname($_SERVER['SCRIPT_FILENAME']).'/'.$this->error_file);
+            exit();
+        }
     }
 
     /**
@@ -1317,83 +1325,11 @@ class Mind extends PDO
     }
 
     /**
-     * Layer installer.
-     *
-     * @param $file
-     * @param null $cache
-     */
-    public function mindLoad($file, $cache=null){
-
-        $fileExt = '.php';
-
-        if (!empty($cache) AND !is_array($cache)) {
-            $cache = array($cache);
-        }
-
-        if (!empty($cache)) {
-            foreach ($cache as $cacheFile) {
-
-                $cacheExplode = $this->pGenerator($cacheFile);
-                if (!empty($cacheExplode['name'])){
-
-                    $cacheFile = $cacheExplode['name'];
-                    $fileName = basename($cacheExplode['name']);
-
-                    if (empty($cacheFile)){
-                        $cacheFile = '';
-                    }
-
-                    if (file_exists($cacheFile . $fileExt)) {
-
-                        /*
-                         * PHPSTORM: In Settings search for 'unresolved include' which is under
-                         * Editor > Inspections; PHP > General > Unresolved include and uncheck the box.
-                         * */
-                        require_once($cacheFile . $fileExt);
-
-                        if (class_exists($fileName)){
-                            if (!empty($cacheExplode['params'])){
-
-                                $ClassName = new $fileName();
-                                $funcList = get_class_methods($fileName);
-
-                                foreach ($cacheExplode['params'] as $param) {
-
-                                    if (in_array($param, $funcList)){
-                                        $ClassName->$param();
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if(!empty($file)){
-
-            if(!is_array($file)){
-                $files = array($file);
-            } else {
-                $files = $file;
-            }
-
-            foreach ($files as $file){
-
-                if (file_exists($file . $fileExt)) {
-                    require_once($file . $fileExt);
-                }
-            }
-        }
-    }
-
-    /**
      * Permanent connection.
-     *
+     * 
      * @param $str
      * @param array $options
-     * @return mixed|string|string[]|null
+     * @return string
      */
     public function permalink($str, $options = array()){
 
@@ -1478,7 +1414,7 @@ class Mind extends PDO
             $replacements = $options['replacements'];
         }
 
-        if(!empty($options['transliterate']) AND !$options['transliterate']){
+        if(isset($options['transliterate']) AND !$options['transliterate']){
             $char_map = array();
         }
 
@@ -1486,7 +1422,6 @@ class Mind extends PDO
 
         if(!empty($options['replacements']) AND is_array($options['replacements'])){
             foreach ($options['replacements'] as $objName => $val) {
-
                 $str = str_replace($objName, $val, $str);
 
             }
@@ -1547,278 +1482,10 @@ class Mind extends PDO
     }
 
     /**
-     * Routing manager.
-     *
-     * @param $uri
-     * @param $file
-     * @param null $cache
-     * @return bool
-     */
-    public function route($uri, $file, $cache=null){
-        $public_htaccess = implode("\n", array(
-            'RewriteEngine On',
-            'RewriteCond %{REQUEST_FILENAME} -s [OR]',
-            'RewriteCond %{REQUEST_FILENAME} -l [OR]',
-            'RewriteCond %{REQUEST_FILENAME} -d',
-            'RewriteRule ^.*$ - [NC,L]',
-            'RewriteRule ^.*$ index.php [NC,L]'
-        ));
-
-        $private_htaccess = "Deny from all";
-        $htaccess_file = '.htaccess';
-
-        if(!file_exists($htaccess_file)){
-            $this->write($public_htaccess, $htaccess_file);
-        }
-
-        $dirs = array_filter(glob('*'), 'is_dir');
-
-        if(!empty($dirs)){
-            foreach ($dirs as $dir){
-
-                if(!file_exists($dir.'/'.$htaccess_file)){
-                    $this->write($private_htaccess, $dir.'/'.$htaccess_file);
-                }
-
-            }
-        }
-
-        if(empty($file)){
-            return false;
-        }
-
-        $request = str_replace($this->base_url, '', $_SERVER['REQUEST_URI']);
-        $fields     = array();
-
-        if(!empty($uri)){
-
-            $uriData = $this->pGenerator($uri);
-            if(!empty($uriData['name'])){
-                $uri = $uriData['name'];
-            }
-            if(!empty($uriData['params'])){
-                $fields = $uriData['params'];
-            }
-        }
-
-        if($uri == '/'){
-            $uri = $this->base_url;
-        }
-
-        $params = array();
-
-        if(strstr($request, '/')){
-
-            $step1 = str_replace($uri, '', $request);
-            $step2 = explode('/', trim($step1,'/'));
-            $step3 = array_filter($step2, 'is_string');
-            $params = array_values($step3);
-        }
-
-        if($_SERVER['REQUEST_METHOD'] != 'POST'){
-
-            $this->post = array();
-
-            if(!empty($fields)){
-
-                foreach ($fields as $key => $field) {
-
-                    if(!empty($params[$key]) OR $params[$key] == '0'){
-                        $this->post[$field] = $params[$key];
-                    }
-                }
-            } else {
-                $this->post = array_diff($params, array('', ' '));
-            }
-        }
-
-        if(!empty($request)){
-
-            if(!empty($params)){
-                $uri .='/'.implode('/', $params);
-            }
-
-            if($request == $uri OR trim($request, '/') == trim($uri, '/')){
-                $this->error_status = false;
-                $this->mindLoad($file, $cache);
-                exit();
-            }
-
-            $this->error_status = true;
-
-        } else {
-            if($uri == $this->base_url) {
-                $this->error_status = false;
-                $this->mindLoad($file, $cache);
-                exit();
-            }
-
-        }
-        return false;
-    }
-
-    /**
-     * File writer.
-     *
-     * @param $data
-     * @param $filePath
-     * @return bool
-     */
-    public function write($data, $filePath) {
-
-        if(is_array($data)){
-            $content    = implode(':', $data);
-        } else {
-            $content    = $data;
-        }
-
-        if(isset($content)){
-
-            $fileName        = fopen($filePath, "a+");
-            fwrite($fileName, $content."\r\n");
-            fclose($fileName);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * File uploader.
-     *
-     * @param $files
-     * @param $path
-     * @return array
-     */
-    public function upload($files, $path){
-
-        $result = array();
-
-        if(isset($files['name'])){
-            $files = array($files);
-        }
-
-        foreach ($files as $file) {
-
-            #Path syntax correction for Windows.
-            $tmp_name = str_replace('\\\\', '\\', $file['tmp_name']);
-            $file['tmp_name'] = $tmp_name;
-
-            $xtime      = gettimeofday();
-            $xdat       = date('d-m-Y g:i:s').$xtime['usec'];
-            $ext        = $this->info($file['name'], 'extension');
-            $newpath    = $path.'/'.md5($xdat).'.'.$ext;
-
-            move_uploaded_file($file['tmp_name'], $newpath);
-
-            $result[]   = $newpath;
-
-        }
-
-        return $result;
-    }
-
-    /**
-     * Content researcher.
-     *
-     * @param $left
-     * @param $right
-     * @param $url
-     * @return array
-     */
-    public function get_contents($left, $right, $url){
-
-        $result = array();
-
-        if($this->is_url($url)) {
-
-            $arrContextOptions = stream_context_create(array(
-                'ssl' => array(
-                    'verify_peer'       => false,
-                    'verify_peer_name'  => false,
-                )
-            ));
-
-            $data = file_get_contents($url, false, $arrContextOptions);
-        } else {
-
-            $data = $url;
-        }
-
-        $content = str_replace(array("\n", "\r", "\t"), '', $data);
-
-        if(preg_match_all('/'.preg_quote($left, '/').'(.*?)'.preg_quote($right, '/').'/i', $content, $result)){
-
-            if(!empty($result)){
-                return array_unique($result[1]);
-            } else {
-                return $result;
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * File downloader.
-     *
-     * @param $links
-     * @param array $opt
-     * @return array
-     */
-    public function download($links, $opt=array('path'=>'download'))
-    {
-
-        $path = './'.$opt['path'];
-
-        $result = array();
-
-        if(empty($links)){
-            return $result;
-        }
-
-        if(!is_array($links)){
-            $links = array($links);
-        }
-
-        foreach($links as $link){
-
-            $link_path = parse_url($this->info($link, 'dirname'));
-            $destination = $path.urldecode($link_path['path']);
-            $other_path = urldecode($this->info($link, 'basename'));
-
-            if(!is_dir($destination)){
-                mkdir($destination, 0777, true);
-            }
-
-            if(!file_exists($destination.'/'.$other_path)){
-                copy($link, $destination.'/'.$other_path);
-            }
-
-            $remote_file = $this->remoteFileSize($link);
-            $local_file = filesize($destination.'/'.$other_path);
-
-            if(file_exists($destination.'/'.$other_path)){
-
-                if($remote_file != $local_file){
-                    unlink($destination.'/'.$other_path);
-                    copy($link, $destination.'/'.$other_path);
-
-                }
-            }
-
-            $result[] = $destination.'/'.$other_path;
-        }
-
-        return $result;
-    }
-
-    /**
      * Learns the size of the remote file.
      *
      * @param $url
-     * @return mixed
+     * @return int|mixed
      */
     public function remoteFileSize($url){
         $ch = curl_init($url);
@@ -1828,12 +1495,89 @@ class Mind extends PDO
         curl_setopt($ch, CURLOPT_NOBODY, TRUE);
 
         curl_exec($ch);
+
+        $response_code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $size = curl_getinfo($ch, CURLINFO_CONTENT_LENGTH_DOWNLOAD);
 
         curl_close($ch);
+
+        if(!in_array($response_code, array('200'))){
+            return -1;
+        }
         return $size;
     }
 
+    /**
+     * Layer installer.
+     *
+     * @param $file
+     * @param null $cache
+     */
+    public function mindLoad($file, $cache=null){
+
+        $fileExt = '.php';
+
+        if (!empty($cache) AND !is_array($cache)) {
+            $cache = array($cache);
+        }
+
+        if (!empty($cache)) {
+            foreach ($cache as $cacheFile) {
+
+                $cacheExplode = $this->pGenerator($cacheFile);
+                if (!empty($cacheExplode['name'])){
+
+                    $cacheFile = $cacheExplode['name'];
+                    $fileName = basename($cacheExplode['name']);
+
+                    if (empty($cacheFile)){
+                        $cacheFile = '';
+                    }
+
+                    if (file_exists($cacheFile . $fileExt)) {
+
+                        /*
+                         * PHPSTORM: In Settings search for 'unresolved include' which is under
+                         * Editor > Inspections; PHP > General > Unresolved include and uncheck the box.
+                         * */
+                        require_once($cacheFile . $fileExt);
+
+                        if (class_exists($fileName)){
+                            if (!empty($cacheExplode['params'])){
+
+                                $ClassName = new $fileName();
+                                $funcList = get_class_methods($fileName);
+
+                                foreach ($cacheExplode['params'] as $param) {
+
+                                    if (in_array($param, $funcList)){
+                                        $ClassName->$param();
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if(!empty($file)){
+
+            if(!is_array($file)){
+                $files = array($file);
+            } else {
+                $files = $file;
+            }
+
+            foreach ($files as $file){
+
+                if (file_exists($file . $fileExt)) {
+                    require_once($file . $fileExt);
+                }
+            }
+        }
+    }
 
     /**
      * Column sql syntax creator.
@@ -1937,11 +1681,310 @@ class Mind extends PDO
         return $Result;
     }
 
-    public function __destruct()
-    {
-        if($this->error_status){
-            $this->mindLoad(dirname($_SERVER['SCRIPT_FILENAME']).'/'.$this->error_file);
-            exit();
+    /**
+     * Routing manager.
+     *
+     * @param $uri
+     * @param $file
+     * @param null $cache
+     * @return bool
+     */
+    public function route($uri, $file, $cache=null){
+        $public_htaccess = implode("\n", array(
+            'RewriteEngine On',
+            'RewriteCond %{REQUEST_FILENAME} -s [OR]',
+            'RewriteCond %{REQUEST_FILENAME} -l [OR]',
+            'RewriteCond %{REQUEST_FILENAME} -d',
+            'RewriteRule ^.*$ - [NC,L]',
+            'RewriteRule ^.*$ index.php [NC,L]'
+        ));
+
+        $private_htaccess = "Deny from all";
+        $htaccess_file = '.htaccess';
+
+        if(!file_exists($htaccess_file)){
+            $this->write($public_htaccess, $htaccess_file);
         }
+
+        $dirs = array_filter(glob('*'), 'is_dir');
+
+        if(!empty($dirs)){
+            foreach ($dirs as $dir){
+
+                if(!file_exists($dir.'/'.$htaccess_file)){
+                    $this->write($private_htaccess, $dir.'/'.$htaccess_file);
+                }
+
+            }
+        }
+
+        if(empty($file)){
+            return false;
+        }
+
+        $request = str_replace($this->base_url, '', $_SERVER['REQUEST_URI']);
+        $fields     = array();
+
+        if(!empty($uri)){
+
+            $uriData = $this->pGenerator($uri);
+            if(!empty($uriData['name'])){
+                $uri = $uriData['name'];
+            }
+            if(!empty($uriData['params'])){
+                $fields = $uriData['params'];
+            }
+        }
+
+        if($uri == '/'){
+            $uri = $this->base_url;
+        }
+
+        $params = array();
+
+        if(strstr($request, '/')){
+
+            $step1 = str_replace($uri, '', $request);
+            $step2 = explode('/', trim($step1,'/'));
+            $step3 = array_filter($step2, 'is_string');
+            $params = array_values($step3);
+        }
+
+        if($_SERVER['REQUEST_METHOD'] != 'POST'){
+
+            $this->post = array();
+
+
+            if(!empty($fields) AND !empty($params)){
+
+                foreach ($fields as $key => $field) {
+
+                    if(isset($params[$key])){
+
+                        if(!empty($params[$key]) OR $params[$key] == '0'){
+                            $this->post[$field] = $params[$key];
+                        }
+
+                    }
+                }
+            } else {
+                $this->post = array_diff($params, array('', ' '));
+            }
+        }
+
+        if(!empty($request)){
+
+            if(!empty($params)){
+                $uri .='/'.implode('/', $params);
+            }
+
+            if($request == $uri OR trim($request, '/') == trim($uri, '/')){
+                $this->error_status = false;
+                $this->mindLoad($file, $cache);
+                exit();
+            }
+
+            $this->error_status = true;
+
+        } else {
+            if($uri == $this->base_url) {
+                $this->error_status = false;
+                $this->mindLoad($file, $cache);
+                exit();
+            }
+
+        }
+        return false;
     }
+
+    /**
+     * File writer.
+     *
+     * @param $data
+     * @param $filePath
+     * @param string $delimiter
+     * @return bool
+     */
+    public function write($data, $filePath, $delimiter=':') {
+
+        if(is_array($data)){
+            $content    = implode($delimiter, $data);
+        } else {
+            $content    = $data;
+        }
+
+        if(isset($content)){
+
+            $fileName        = fopen($filePath, "a+");
+            fwrite($fileName, $content."\r\n");
+            fclose($fileName);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * File uploader.
+     *
+     * @param $files
+     * @param $path
+     * @return array
+     */
+    public function upload($files, $path){
+
+        $result = array();
+
+        if(isset($files['name'])){
+            $files = array($files);
+        }
+
+        foreach ($files as $file) {
+
+            #Path syntax correction for Windows.
+            $tmp_name = str_replace('\\\\', '\\', $file['tmp_name']);
+            $file['tmp_name'] = $tmp_name;
+
+            $xtime      = gettimeofday();
+            $xdat       = date('d-m-Y g:i:s').$xtime['usec'];
+            $ext        = $this->info($file['name'], 'extension');
+            $newpath    = $path.'/'.md5($xdat).'.'.$ext;
+
+            move_uploaded_file($file['tmp_name'], $newpath);
+
+            $result[]   = $newpath;
+
+        }
+
+        return $result;
+    }
+
+    /**
+     * File downloader.
+     *
+     * @param $links
+     * @param null $opt
+     * @return array
+     */
+    public function download($links, $opt = null)
+    {
+
+        $result = array();
+        $nLinks = array();
+
+        if(empty($links)){
+            return $result;
+        }
+
+        if(!is_array($links)){
+            $links = array($links);
+        }
+
+        foreach($links as $link) {
+
+            if($this->is_url($link)){
+                if($this->remoteFileSize($link)>1){
+                    $nLinks[] = $link;
+                }
+            }
+
+            if(!$this->is_url($link)){
+                if(!strstr($link, '://')){
+
+                    if(file_exists($link)){
+                        $nLinks[] = $link;
+                    }
+
+                }
+            }
+
+        }
+
+        if(count($nLinks) != count($links)){
+            return $result;
+        }
+
+        $path = '';
+        if(!empty($opt['path'])){
+            $path .= $opt['path'];
+
+            if(!is_dir($path)){
+                mkdir($path, 0777, true);
+            }
+        } else {
+            $path .= './download';
+        }
+
+        foreach ($nLinks as $nLink) {
+
+            $destination = $path;
+
+            $other_path = urldecode($this->info($nLink, 'basename'));
+
+            if(!is_dir($destination)){
+                mkdir($destination, 0777, true);
+            }
+
+            if(file_exists($destination.'/'.$other_path)){
+
+                $remote_file = $this->remoteFileSize($nLink);
+                $local_file = filesize($destination.'/'.$other_path);
+    
+                if($remote_file != $local_file){
+                    unlink($destination.'/'.$other_path);
+                    copy($nLink, $destination.'/'.$other_path);
+
+                }
+            } else {
+                copy($nLink, $destination.'/'.$other_path);
+            }
+
+            $result[] = $destination.'/'.$other_path;
+        }
+
+    return $result;
+    }
+
+    /**
+     * Content researcher.
+     *
+     * @param $left
+     * @param $right
+     * @param $url
+     * @return array
+     */
+    public function get_contents($left, $right, $url){
+
+        $result = array();
+
+        if($this->is_url($url)) {
+
+            $arrContextOptions = stream_context_create(array(
+                'ssl' => array(
+                    'verify_peer'       => false,
+                    'verify_peer_name'  => false,
+                )
+            ));
+
+            $data = file_get_contents($url, false, $arrContextOptions);
+        } else {
+
+            $data = $url;
+        }
+
+        $content = str_replace(array("\n", "\r", "\t"), '', $data);
+
+        if(preg_match_all('/'.preg_quote($left, '/').'(.*?)'.preg_quote($right, '/').'/i', $content, $result)){
+
+            if(!empty($result)){
+                return array_unique($result[1]);
+            } else {
+                return $result;
+            }
+        }
+
+        return $result;
+    }
+
 }
