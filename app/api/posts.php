@@ -1,4 +1,11 @@
 <?php
+if(!isset($this->post['start'])){
+    $this->post['start'] = 0;
+}
+
+if(!isset($this->post['end'])){
+    $this->post['end'] = 0;
+}
 
 $scheme = array(
     'limit'=>array(
