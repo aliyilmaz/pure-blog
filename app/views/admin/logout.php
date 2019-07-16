@@ -13,19 +13,20 @@
     <div class='loginForm animated bounceIn'>
     <h2>Çıkış yapmak istediğinize emin misiniz?</h2>
     <form action="admin/logout" method="POST">
-        <button class='animated infinite pulse' id="logoutForm" name="loginStatus">Çıkış Yap</button>
-        <button class='animated infinite pulse' id="cancelForm" name="cancelStatus">Dashboard</button>
+        <button class="animated infinite pulse" id="logoutForm" name="logout">Çıkış Yap</button>
+        <button class="animated infinite pulse" id="cancelForm" name="dashboard">Dashboard</button>
     </form>
     </div>
     <?php
-        if ($_SESSION['loginStatus'] == false) {
+        if(!$_SESSION['loginStatus']) {
             $this->redirect('admin/login');
         }
-        if (isset($this->post['cancelStatus'])) {
+
+        if( isset($this->post['dashboard'])) {
             $this->redirect('admin/dashboard');
         }
-        if (isset($this->post['loginStatus'])) {
-            $_SESSION['loginStatus'] = false;
+        if( isset($this->post['logout'])) {
+            session_destroy();
             $this->redirect('admin/login');
         }
 
