@@ -4,7 +4,7 @@ require_once 'Mind.php';
 $Mind = new Mind();
 
 // Static page routes.
-$Mind->route('/', 'app/views/index', 'app/data/index');
+$Mind->route('/', 'app/views/index', array('app/tables/startx', 'app/data/index'));
 $Mind->route('admin/dashboard', 'app/views/admin/dashboard');
 $Mind->route('admin/forms', 'app/views/admin/forms');
 $Mind->route('admin/blank', 'app/views/admin/blank');
