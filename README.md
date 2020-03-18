@@ -1,8 +1,7 @@
 # pure-blog
-Mind Framework ile oluşturulan basit bir blog uygulamasıdır.
+It is a simple blog application created with Mind Framework.
 
-## Kurulum
-* Dosyayı [bu bağlantıdan](https://github.com/aliyilmaz/pure-blog/archive/master.zip) indirin
-* İndirdiğiniz dosyayı dizine çıkarın
-* `Mind.php` dosyasında ki veritabanı ayarlarını güncelleyin
-* Adres satırına `domainadiniz/install/startx` yazıp `enter` yapın.
+## Install
+* Download the [repository](https://github.com/aliyilmaz/pure-blog/archive/master.zip) and extract it to the server.
+* Adjust [database settings](https://github.com/aliyilmaz/Mind/blob/master/docs/en-readme.md#database-settings)
+* In the address line, type the path to the directory.
