@@ -1,5 +1,7 @@
 <?php
 
+if(!$this->is_db($this->dbname)){ $this->dbCreate($this->dbname); }
+
 if(!$this->is_table('categories') OR !$this->is_table('general') OR !$this->is_table('posts') OR !$this->is_table('users')){
 
     $scheme = array(
