@@ -23,7 +23,7 @@
         }
 
         if( isset($this->post['dashboard'])) {
-            $this->redirect('admin/dashboard');
+            $this->redirect('admin');
         }
         if( isset($this->post['logout'])) {
             session_destroy();
