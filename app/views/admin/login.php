@@ -1,3 +1,9 @@
+<?php 
+if(isset($_SESSION['loginStatus'])) {
+    $this->redirect('admin');
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
