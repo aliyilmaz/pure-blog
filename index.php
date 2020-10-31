@@ -1,7 +1,15 @@
 <?php
 
-require_once 'Mind.php';
-$Mind = new Mind();
+require './Mind.php';
+
+$conf = array(
+    'host'      =>  'localhost',
+    'dbname'    =>  'mydb',
+    'username'  =>  'root',
+    'password'  =>  ''
+);
+
+$Mind = new Mind($conf);
 
 // Static page routes.
 $Mind->route('/', 'app/views/index', array('app/tables/startx', 'app/data/index'));
