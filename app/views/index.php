@@ -64,7 +64,7 @@
                 <?php foreach ($pinned_posts as $post) {
         ?>
                 <?php extract($post); ?>
-                <?php extract($this->samantha('users', array('id' => $author))); ?>
+                <?php extract($this->theodore('users', array('id' => $author))); ?>
                 <section class="post">
                     <header class="post-header">
                         <img width="48" height="48" alt="<?=$username; ?>&#x27;s avatar" class="post-avatar" src="<?=$avatar; ?>">
@@ -75,7 +75,7 @@
                             By <a href="#" class="post-author"><?=$username; ?></a> under 
                             <?php foreach (json_decode($category, true) as $cat_id) {
             ?>
-                            <?php $cat = $this->samantha('categories', array('id' => $cat_id)); ?>
+                            <?php $cat = $this->theodore('categories', array('id' => $cat_id)); ?>
                             <a class="post-category <?=$cat['class_name']; ?>" href="#"><?=$cat['text']; ?></a> 
                             <?php
         } ?>
@@ -142,7 +142,7 @@
                             By <a href="#" class="post-author"><?=$username; ?></a> under 
                             <?php foreach (json_decode($category, true) as $cat_id) {
             ?>
-                            <?php $cat = $this->samantha('categories', array('id' => $cat_id)); ?>
+                            <?php $cat = $this->theodore('categories', array('id' => $cat_id)); ?>
                             <a class="post-category <?=$cat['class_name']; ?>" href="#"><?=$cat['text']; ?></a> 
                             <?php
         } ?>
