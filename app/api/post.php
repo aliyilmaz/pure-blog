@@ -5,8 +5,8 @@ if(!isset($this->post['id'])){
 }
 
 $post = array();
-if ($this->do_have('posts', $this->post['id'])) {
-    $post = $this->samantha('posts', array('id' => $this->post['id']));
+if ($this->do_have('posts', array('id'=>$this->post['id']))) {
+    $post = $this->theodore('posts', array('id' => $this->post['id']));
 }
 
 echo json_encode($post);
