@@ -3,7 +3,7 @@
 /**
  *
  * @package    Mind
- * @version    Release: 3.1.6
+ * @version    Release: 3.2.2
  * @license    GPL3
  * @author     Ali YILMAZ <aliyilmaz.work@gmail.com>
  * @category   Php Framework, Design pattern builder for PHP.
@@ -748,6 +748,8 @@ class Mind extends PDO
     public function getData($tblName, $options=null){
 
         $sql = '';
+        $andSql = '';
+        $orSql = '';
         $columns = $this->columnList($tblName);
 
         if(!empty($options['column'])){
@@ -764,6 +766,23 @@ class Mind extends PDO
         } else {
             $sqlColumns = $tblName.'.'.implode(', '.$tblName.'.', $columns);
         }
+
+        $prefix = ' BINARY ';
+        $suffix = ' = ?';
+        if(!empty($options['search']['scope'])){
+            $options['search']['scope'] = mb_strtoupper($options['search']['scope']);
+            switch ($options['search']['scope']) {
+                case 'LIKE':
+                    $prefix = '';
+                    $suffix = ' LIKE ?';
+                    break;
+                case 'BINARY':
+                    $prefix = ' BINARY ';
+                    $suffix = ' = ?';
+                    break;
+            }
+        }
+
 
         $prepareArray = array();
         $executeArray = array();
@@ -789,45 +808,95 @@ class Mind extends PDO
             foreach ( $searchColumns as $column ) {
 
                 foreach ( $keyword as $value ) {
-                    $prepareArray[] = $column.' LIKE ?';
+                    $prepareArray[] = $prefix.$column.$suffix;
                     $executeArray[] = $value;
                 }
 
             }
 
             $sql = 'WHERE '.implode(' OR ', $prepareArray);
+
         }
 
+        $delimiterArray = array('and', 'AND', 'or', 'OR');
+        
+        if(!empty($options['search']['delimiter']['and'])){
+            if(in_array($options['search']['delimiter']['and'], $delimiterArray)){
+                $options['search']['delimiter']['and'] = mb_strtoupper($options['search']['delimiter']['and']);
+            } else {
+                $options['search']['delimiter']['and'] = ' AND ';
+            }
+        } else {
+            $options['search']['delimiter']['and'] = ' AND ';
+        }
 
-        $searchType = ' OR ';
+        if(!empty($options['search']['delimiter']['or'])){
+            if(in_array($options['search']['delimiter']['or'], $delimiterArray)){
+                $options['search']['delimiter']['or'] = mb_strtoupper($options['search']['delimiter']['or']);
+            } else {
+                $options['search']['delimiter']['or'] = ' OR ';
+            }
+        } else {
+            $options['search']['delimiter']['or'] = ' OR ';
+        }
+
         if(!empty($options['search']['or']) AND is_array($options['search']['or'])){
-            $searchType = ' OR ';
 
-            foreach ($options['search']['or'] as $column => $value) {
-
-                $prepareArray[] = $column.' LIKE ?';
-                $executeArray[] = $value;
+            if(!isset($options['search']['or'][0])){
+                $options['search']['or'] = array($options['search']['or']);
             }
 
+            foreach ($options['search']['or'] as $key => $row) {
+
+                foreach ($row as $column => $value) {
+
+                    $x[$key][] = $prefix.$column.$suffix;
+                    $prepareArray[] = $prefix.$column.$suffix;
+                    $executeArray[] = $value;
+                }
+                
+                $orSql .= implode(' OR ', $x[$key]);
+
+                if(count($options['search']['or'])>$key+1){
+                    $orSql .= ' '.$options['search']['delimiter']['or']. ' ';
+                }
+            }
         }
 
         if(!empty($options['search']['and']) AND is_array($options['search']['and'])){
-            $searchType = ' AND ';
 
-            foreach ($options['search']['and'] as $column => $value) {
+            if(!isset($options['search']['and'][0])){
+                $options['search']['and'] = array($options['search']['and']);
+            }
 
-                $prepareArray[] = $column.' LIKE ?';
-                $executeArray[] = $value;
+            foreach ($options['search']['and'] as $key => $row) {
+
+                foreach ($row as $column => $value) {
+
+                    $x[$key][] = $prefix.$column.$suffix;
+                    $prepareArray[] = $prefix.$column.$suffix;
+                    $executeArray[] = $value;
+                }
+                
+                $andSql .= implode(' AND ', $x[$key]);
+
+                if(count($options['search']['and'])>$key+1){
+                    $andSql .= ' '.$options['search']['delimiter']['and']. ' ';
+                }
             }
 
         }
 
-        if(
-            !empty($options['search']['or']) AND is_array($options['search']['or']) OR
-            !empty($options['search']['and']) AND is_array($options['search']['and'])
-        ){
+        $delimiter = '';
+        if(!empty($andSql) AND !empty($orSql)){
+            $delimiter = ' AND ';
+        }
 
-            $sql = 'WHERE '.implode($searchType, $prepareArray);
+        if(
+            !empty($options['search']['or']) OR
+            !empty($options['search']['and'])
+        ){
+            $sql = 'WHERE '.$andSql.$delimiter.$orSql;
         }
 
         if(!empty($options['sort'])){
@@ -889,27 +958,136 @@ class Mind extends PDO
      * @param mixed $column
      * @return array
      */
-    public function samantha($tblName, $map, $column=null)
+    public function samantha($tblName, $map, $column=null, $status=false)
     {
+        $output = array();
+        $columns = array();
 
         $scheme['search']['and'] = $map;
 
+        // Sütun(lar) belirtilmişse
         if (!empty($column)) {
-            $scheme['column'] = $column;
+
+            // bir sütun belirtilmişse
+            if(!is_array($column)){
+                $columns = array($column);
+            } else {
+                $columns = $column;
+            }
+
+            // tablo sütunları elde ediliyor
+            $getColumns = $this->columnList($tblName);
+
+            // belirtilen sütun(lar) var mı bakılıyor
+            foreach($columns as $column){
+
+                // yoksa boş bir array geri döndürülüyor
+                if(!in_array($column, $getColumns)){
+                    return [];
+                }
+
+            }
+
+            // izin verilen sütun(lar) belirtiliyor
+            $scheme['column'] = $columns;
         }
 
         $output = $this->getData($tblName, $scheme);
 
-        if(isset($output[0]) AND count($output)==1){
-            if(!empty($column)){
-                if($this->is_column($tblName, $column)){
-                    $output = $output[0][$column];
-                } else {
-                    $output = $output[0];
-                }
+        return $output;
+    }
+
+    /**
+     * Research assistant.
+     * It serves to obtain a array.
+     * 
+     * @param string $tblName
+     * @param array $map
+     * @param mixed $column
+     * @return array
+     * 
+     */
+    public function theodore($tblName, $map, $column=null){
+
+        $output = array();
+        $columns = array();
+
+        $scheme['search']['and'] = $map;
+
+        // Sütun(lar) belirtilmişse
+        if (!empty($column)) {
+
+            // bir sütun belirtilmişse
+            if(!is_array($column)){
+                $columns = array($column);
             } else {
-                $output = $output[0];
+                $columns = $column;
             }
+
+            // tablo sütunları elde ediliyor
+            $getColumns = $this->columnList($tblName);
+
+            // belirtilen sütun(lar) var mı bakılıyor
+            foreach($columns as $column){
+
+                // yoksa boş bir array geri döndürülüyor
+                if(!in_array($column, $getColumns)){
+                    return [];
+                }
+
+            }
+
+            // izin verilen sütun(lar) belirtiliyor
+            $scheme['column'] = $columns;
+        }
+
+        $data = $this->getData($tblName, $scheme);
+
+        if(count($data)==1 AND isset($data[0])){
+            $output = $data[0];
+        } else {
+            $output = [];
+        }
+
+        return $output;
+    }
+
+    /**
+     * Research assistant.
+     * Used to obtain an element of an array
+     * 
+     * @param string $tblName
+     * @param array $map
+     * @param string $column
+     * @return string
+     * 
+     */
+    public function amelia($tblName, $map, $column){
+
+        $output = '';
+
+        $scheme['search']['and'] = $map;
+
+        // Sütun string olarak gönderilmemişse
+        if (!is_string($column)) {
+            return $output;
+        }
+
+        // tablo sütunları elde ediliyor
+        $getColumns = $this->columnList($tblName);
+
+        // yoksa boş bir string geri döndürülüyor
+        if(!in_array($column, $getColumns)){
+            return $output;
+        }
+
+        // izin verilen sütun belirtiliyor
+        $scheme['column'] = $column;
+
+        $data = $this->getData($tblName, $scheme);
+
+        if(count($data)==1 AND isset($data[0])){
+            $output = $data[0][$column];
         }
 
         return $output;
@@ -1538,6 +1716,16 @@ class Mind extends PDO
     }
 
     /**
+     * md5 hash checking method.
+     * 
+     * @param string $md5
+     * @return bool
+     */
+    public function is_md5($md5 = ''){
+        return strlen($md5) == 32 && ctype_xdigit($md5);
+    }
+
+    /**
      * Validation
      * 
      * @param array $rule
@@ -1628,9 +1816,14 @@ class Mind extends PDO
                     break;
                     // Zorunlu alan kuralı
                     case 'required':
-                        if(empty($data[$column])){
+                        if(!isset($data[$column])){
                             $this->errors[$column][$name] = $message[$name];
+                        } else {
+                            if($data[$column] === ''){
+                                $this->errors[$column][$name] = $message[$name];
+                            }
                         }
+                        
                     break;
                     // Telefon numarası kuralı
                     case 'phone':
@@ -1720,8 +1913,6 @@ class Mind extends PDO
                             }
                         }
 
-                        
-                    
                     break;
                     // Doğrulama kuralı 
                     case 'bool':
@@ -1738,33 +1929,38 @@ class Mind extends PDO
                         }
 
                         if(isset($data[$column]) AND isset($extra)){
-                            if($data[$column] === 'true' OR $data[$column] === '1' OR $data[$column] === 1){
-                                $data[$column] = true;
-                            }
-                            if($data[$column] === 'false' OR $data[$column] === '0' OR $data[$column] === 0){
-                                $data[$column] = false;
-                            }
-
-                            if($extra === 'true' OR $extra === '1' OR $extra === 1){
-                                $extra = true;
-                            }
-                            if($extra === 'false' OR $extra === '0' OR $extra === 0){
-                                $extra = false;
-                            }
-
-                            if($data[$column] !== $extra){
-                                $this->errors[$column][$name] = $message[$name];
+                            if(in_array($data[$column], $acceptable, true) AND in_array($extra, $acceptable, true)){
+                                if($data[$column] === 'true' OR $data[$column] === '1' OR $data[$column] === 1){
+                                    $data[$column] = true;
+                                }
+                                if($data[$column] === 'false' OR $data[$column] === '0' OR $data[$column] === 0){
+                                    $data[$column] = false;
+                                }
+    
+                                if($extra === 'true' OR $extra === '1' OR $extra === 1){
+                                    $extra = true;
+                                }
+                                if($extra === 'false' OR $extra === '0' OR $extra === 0){
+                                    $extra = false;
+                                }
+    
+                                if($data[$column] !== $extra){
+                                    $this->errors[$column][$name] = $message[$name];
+                                }
+                                
+                            } else {
+                                $this->errors[$column][$name] = $wrongTypeMessage;
                             }
                         } 
 
                         if(isset($data[$column]) AND !isset($extra)){
-                            if(!in_array($data[$column], $acceptable)){
+                            if(!in_array($data[$column], $acceptable, true)){
                                 $this->errors[$column][$name] = $wrongTypeMessage;
                             }
                         }
 
-                        if(isset($data[$column]) AND isset($extra)){
-                            if(!in_array($extra, $acceptable)){
+                        if(!isset($data[$column]) AND isset($extra)){
+                            if(!in_array($extra, $acceptable, true)){
                                 $this->errors[$column][$name] = $wrongTypeMessage;
                             }
                         }
@@ -1852,7 +2048,6 @@ class Mind extends PDO
                 $extra = '';
             }
         }
-
        
         if(empty($this->errors)){
             return true;
@@ -1933,7 +2128,7 @@ class Mind extends PDO
     public function redirect($url = '', $delay = 0){
 
         if(!$this->is_http($url) AND !$this->is_https($url) OR empty($url)){
-            $url = 'http://'.$_SERVER['SERVER_NAME'].$this->base_url.$url;
+            $url = $this->base_url.$url;
         }
 
         if(0 !== $delay){
@@ -1942,7 +2137,6 @@ class Mind extends PDO
             header('Location: '.$url);
         }
         ob_end_flush();
-        exit();
     }
 
     /**
@@ -2441,9 +2635,9 @@ class Mind extends PDO
         }
 
         if($this->base_url != '/'){
-            $request = str_replace($this->base_url, '', $_SERVER['REQUEST_URI']);
+            $request = str_replace($this->base_url, '', rawurldecode($_SERVER['REQUEST_URI']));
         } else {
-            $request = trim($_SERVER['REQUEST_URI'], '/');
+            $request = trim(rawurldecode($_SERVER['REQUEST_URI']), '/');
         }
 
         $fields     = array();
@@ -2698,7 +2892,10 @@ class Mind extends PDO
             curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
             $data = curl_exec($ch);
             curl_close($ch);
-
+            
+            if(empty($data)){
+                $data = file_get_contents($url);
+            }
         } else {
             $data = $url;
         }
